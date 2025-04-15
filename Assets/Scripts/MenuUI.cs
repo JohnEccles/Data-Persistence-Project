@@ -3,9 +3,22 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
 {
+
+
+    public Text HighScoreText;
+
+
+    private void Start()    
+    {
+        GameManager.Instance.LoadScore();
+        HighScoreText.text = $"High Score : " + GameManager.Instance.highName + " : " + GameManager.Instance.highScore;
+
+    }
+
     // Added from tutorial
     public void StartNew()
     {
