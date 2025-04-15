@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// Added from tutorial
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class MainManager : MonoBehaviour
 {
     public Brick BrickPrefab;
@@ -18,7 +23,9 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    
+
+    public Text HighScoreText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +43,13 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        // Display High Score (from previuos session) on screen 
+        GameManager.Instance.LoadScore();
+        HighScoreText.text = $"High Score : " + GameManager.Instance.highName + " : " + GameManager.Instance.highScore;
+
+        
+
     }
 
     private void Update()
@@ -58,6 +72,14 @@ public class MainManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            } // Exit Game
+            else if (Input.GetKeyDown(KeyCode.Escape)) 
+            {
+                #if UNITY_EDITOR
+                                EditorApplication.ExitPlaymode();
+                #else
+                                Application.Quit(); // original code to quit Unity player
+                #endif
             }
         }
     }
@@ -72,10 +94,27 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        if (m_Points > GameManager.Instance.highScore) 
+        {
+            GameManager.Instance.playerScore = m_Points;
+            GameManager.Instance.SaveScore();
+
+            // Update the new score on screen
+            GameManager.Instance.LoadScore();
+            HighScoreText.text = $"High Score : " + GameManager.Instance.highName + " : " + GameManager.Instance.highScore;
+
+
+            //print("WE SAVED THE GAME!");
+
+        }   
+
+        
+
     }
 
 
-    
+
 
 
 

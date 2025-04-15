@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
 
+    // Player Data
+    public string playerName = "Name";
+    public int playerScore = 0;
 
-    public string playerName;
-    public int playerScore;
+    // For data from previous session(s) of game
+    public string highName;
+    public int highScore;
 
     private void Awake()
     {
@@ -28,23 +33,21 @@ public class GameManager : MonoBehaviour
     }
 
 
-
-
-    /*
-     * 
      
      // Save & Load Data between sessions
     [System.Serializable] // Makes the class Serializable and allows use to save as JSON
     class SaveData
     {
-        public Color TeamColor;
+        public string playerName;
+        public int playerScore;
     }
 
 
-    public void SaveColor()
+    public void SaveScore()
     {
         SaveData data = new SaveData();
-        data.TeamColor = TeamColor;
+        data.playerName = playerName;
+        data.playerScore = playerScore;
 
         string json = JsonUtility.ToJson(data);
 
@@ -52,7 +55,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void LoadColor()
+    public void LoadScore()
     {
         string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
@@ -60,11 +63,12 @@ public class GameManager : MonoBehaviour
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            TeamColor = data.TeamColor;
+            highName = data.playerName;
+            highScore = data.playerScore;
         }
     }
 
 
-     */
+     
 
 }
